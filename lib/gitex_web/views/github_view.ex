@@ -1,5 +1,6 @@
 defmodule GitexWeb.GithubView do
   use GitexWeb, :view
 
-  def render("github_repos.json", %{repos: repos}), do: %{repos: repos}
+  def render("repos.json", %{repos: repos, refresh_token: refresh_token}),
+    do: %{repos: repos, refresh_token: refresh_token}
 end

@@ -11,6 +11,10 @@ config :gitex,
   ecto_repos: [Gitex.Repo],
   generators: [binary_id: true]
 
+config :gitex, Gitex.Repo,
+  migration_primary_key: [type: :binary_id],
+  migration_foreign_key: [type: :binary_id]
+
 # Configures the endpoint
 config :gitex, GitexWeb.Endpoint,
   url: [host: "localhost"],
@@ -18,6 +22,14 @@ config :gitex, GitexWeb.Endpoint,
   render_errors: [view: GitexWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Gitex.PubSub,
   live_view: [signing_salt: "Lj9I1gNh"]
+
+config :gitex, GitexWeb.Auth.Guardian,
+  issuer: "gitex",
+  secret_key: "KX9hqeM2SD4YraljborE+S9JXff+ifjx4i7I/Ubd1bx9uap/gAqW1whWoRG4nZ+Q"
+
+config :gitex, GitexWeb.Auth.Pipeline,
+  module: GitexWeb.Auth.Guardian,
+  error_handler: GitexWeb.Auth.ErrorHandler
 
 config :gitex, GitexWeb.GithubController, github_adapter: Gitex.Github.Client
 

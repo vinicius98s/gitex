@@ -1,6 +1,7 @@
 defmodule GitexWeb.GithubController do
   use GitexWeb, :controller
 
+  alias GitexWeb.Auth.Guardian
   alias GitexWeb.FallbackController
 
   action_fallback FallbackController
@@ -10,10 +11,12 @@ defmodule GitexWeb.GithubController do
     limit = Map.get(params, "limit")
     page = Map.get(params, "page")
 
+    refresh_token = Guardian.Plug.current_token(conn)
+
     with {:ok, repos} <- client().get_repos(user, limit: limit, page: page) do
       conn
       |> put_status(:ok)
-      |> render("github_repos.json", repos: repos)
+      |> render("repos.json", repos: repos, refresh_token: refresh_token)
     end
   end
 
